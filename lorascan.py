@@ -52,7 +52,7 @@ try:
 except ImportError:
     HAS_NUMPY = False
 
-VERSION = "1.1.0"
+VERSION = "1.1.1"
 APP = "pocket-lorascan"
 
 W, H = 320, 170
@@ -982,6 +982,7 @@ class GpsReader:
         self.hdop = None
         self.last_fix = 0.0
         self.last_data = 0.0
+        self.in_view = {}        # constellation talker -> (satellites in view, time)
         self.error = None
         self.stop_flag = False
         self.track = []          # (t, lat, lon) every ~10 s / 20 m while listening
@@ -995,13 +996,20 @@ class GpsReader:
     def position(self):
         return (self.lat, self.lon) if self.has_fix else None
 
+    def sats_in_view(self):
+        now = time.monotonic()
+        return sum(n for n, t in self.in_view.values() if now - t < 5)
+
     def status(self):
+        view = self.sats_in_view()
         if self.has_fix:
-            return "GPS fix · {} sats".format(self.sats), GREEN
+            return "GPS fix · using {} of {} satellites".format(self.sats, max(view, self.sats)), GREEN
         if self.error:
             return "GPS: " + self.error, ORANGE
         if time.monotonic() - self.last_data < 3:
-            return "GPS searching… ({} sats)".format(self.sats), YELLOW
+            if view:
+                return "GPS searching… {} satellites in view".format(view), YELLOW
+            return "GPS searching… no satellites yet (needs sky view)", YELLOW
         return "GPS: no data yet", DIM
 
     def start(self):
@@ -1015,7 +1023,9 @@ class GpsReader:
         p = line.split("*")[0].split(",")
         kind = p[0][3:]
         try:
-            if kind == "GGA" and len(p) > 9:
+            if kind == "GSV" and len(p) > 3 and p[3]:
+                self.in_view[p[0][1:3]] = (int(p[3]), time.monotonic())
+            elif kind == "GGA" and len(p) > 9:
                 self.quality = int(p[6] or 0)
                 self.sats = int(p[7] or 0)
                 self.hdop = float(p[8]) if p[8] else self.hdop
@@ -2257,7 +2267,7 @@ class FakeGps:
         return self.here
 
     def status(self):
-        return "GPS fix · 9 sats", GREEN
+        return "GPS fix · using 9 of 14 satellites", GREEN
 
     def start(self):
         pass

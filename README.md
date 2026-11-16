@@ -65,9 +65,9 @@ The radio can only be used by one program at a time. If a Meshtastic app (such a
 ## Install
 
 ```
-scp pocket-lorascan_1.1.0-rev1_arm64.deb YOURUSER@DEVICE-IP:~/
+scp pocket-lorascan_1.1.1-rev1_arm64.deb YOURUSER@DEVICE-IP:~/
 ssh YOURUSER@DEVICE-IP
-sudo apt install ~/pocket-lorascan_1.1.0-rev1_arm64.deb
+sudo apt install ~/pocket-lorascan_1.1.1-rev1_arm64.deb
 sudo reboot
 ```
 
