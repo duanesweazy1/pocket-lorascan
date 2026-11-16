@@ -1,0 +1,41 @@
+{
+  "package_name": "pocket-lorascan",
+  "version": "1.1.0",
+  "app_name": "LoRa Scanner",
+  "bin_name": "pocket-lorascan",
+  "description": "Receive-only LoRa scanner and packet decoder (Meshtastic, LoRaWAN) with GPS coverage map (Cap LoRa-1262)",
+  "store": {
+    "summary": "LoRa spectrum + Meshtastic & LoRaWAN packet decoder + GPS coverage map",
+    "description": "LoRa Scanner shows and decodes what is on the air in the US 902-928 MHz band using the Cap LoRa-1262. Spectrum with max-hold and a waterfall show activity across the band. The Meshtastic Finder listens on each preset's default frequency and decodes the public default channel: text messages, node names, telemetry, positions and traceroutes (private channels stay encrypted). The LoRaWAN page hops the US915 channels of any sub-band (or the gateway downlink channels) and decodes frame headers: device address, network (The Things Network, Helium...), frame counter, port, and join requests with the device's EUI. Every packet is listed with full details and a hex dump, logged to ~/LoRaScan/packets.csv, and - with the Cap's GPS - plotted on a coverage map you can export as a Google Earth KML file. Receive only: it never transmits. Requires the Cap LoRa-1262.",
+    "categories": [
+      "Radio & Comms",
+      "Hardware & IoT"
+    ],
+    "screenshots": [
+      "screenshots/page1.png",
+      "screenshots/page2.png",
+      "screenshots/page3.png",
+      "screenshots/page4.png",
+      "screenshots/page5.png",
+      "screenshots/page6.png"
+    ],
+    "icon": "packaging/store_icon.png",
+    "license": "MIT",
+    "source_repo": "https://github.com/duanesweazy1/pocket-lorascan",
+    "author": {
+      "github": "duanesweazy1",
+      "display_name": "Duane Sweazy"
+    },
+    "share_code": "LSCN",
+    "permissions": {
+      "camera": false,
+      "microphone": false,
+      "imu": false,
+      "network": false,
+      "additional_hardware": true,
+      "background_service": false,
+      "external_display": false
+    },
+    "locales": {}
+  }
+}
